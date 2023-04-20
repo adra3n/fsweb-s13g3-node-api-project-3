@@ -13,7 +13,7 @@
         "url": "git+https://github.com/Workintech/fsweb-s13g3-node-api-project3.git"
     },
     "dependencies": {
-        "express": "^4.18.1",
+        "express": "^4.18.2",
         "knex": "^2.0.0",
         "sqlite3": "^5.0.8"
     },
