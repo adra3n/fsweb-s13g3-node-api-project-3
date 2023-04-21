@@ -12,6 +12,7 @@ router.get('/', async (req, res) => {
   // TÜM KULLANICILARI İÇEREN DİZİYİ DÖNDÜRÜN
   try {
     const users = await userModel.get()
+    res.json(users)
   } catch (error) {
     next(error)
   }
