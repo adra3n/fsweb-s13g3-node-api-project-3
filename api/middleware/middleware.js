@@ -1,12 +1,11 @@
-const { json } = require('express')
 const userModel = require('../users/users-model')
-
 function logger(req, res, next) {
   // SİHRİNİZİ GÖRELİM
   const method = req.method
   const url = req.originalUrl
   const timestamp = new Date().toLocaleString()
-  console.log(`${method}--${url}--${timestamp}`)
+
+  console.log(`${method} -- ${url} -- ${timestamp}`)
   next()
 }
 
@@ -15,7 +14,7 @@ async function validateUserId(req, res, next) {
   try {
     const user = await userModel.getById(req.params.id)
     if (!user) {
-      req.status(404).json({ message: 'kullanıcı bulunamadı' })
+      res.status(404).json({ message: 'kullanıcı bulunamadı' })
     } else {
       req.currentUser = user
       next()
@@ -30,7 +29,7 @@ function validateUser(req, res, next) {
   try {
     const { name } = req.body
     if (!name) {
-      req.status(400).json({ mesaj: 'gerekli name alanı eksik' })
+      res.status(400).json({ message: 'gerekli name alanı eksik' })
     } else {
       next()
     }
@@ -44,7 +43,7 @@ function validatePost(req, res, next) {
   try {
     const { text } = req.body
     if (!text) {
-      req.status(400).json({ mesaj: 'gerekli text alanı eksik' })
+      res.status(400).json({ message: 'gerekli text alanı eksik' })
     } else {
       next()
     }
@@ -55,4 +54,9 @@ function validatePost(req, res, next) {
 
 // bu işlevleri diğer modüllere değdirmeyi unutmayın
 
-module.exports = { logger, validateUserId, validateUser, validatePost }
+module.exports = {
+  logger,
+  validateUserId,
+  validateUser,
+  validatePost,
+}

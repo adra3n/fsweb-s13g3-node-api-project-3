@@ -1,5 +1,4 @@
 const express = require('express')
-
 const middleware = require('../middleware/middleware')
 const userModel = require('./users-model')
 const postModel = require('../posts/posts-model')
@@ -35,7 +34,7 @@ router.post('/', middleware.validateUser, async (req, res, next) => {
   try {
     let { name } = req.body
     const insertedUser = await userModel.insert({ name: name })
-    res.json(insertedUser)
+    res.status(201).json(insertedUser)
   } catch (error) {
     next(error)
   }
@@ -43,8 +42,8 @@ router.post('/', middleware.validateUser, async (req, res, next) => {
 
 router.put(
   '/:id',
-  middleware.validateUser,
   middleware.validateUserId,
+  middleware.validateUser,
   async (req, res, next) => {
     // YENİ GÜNCELLENEN USER NESNESİNİ DÖNDÜRÜN
     // user id yi doğrulayan ara yazılım gereklidir
@@ -86,16 +85,16 @@ router.post(
   middleware.validateUserId,
   middleware.validatePost,
   async (req, res, next) => {
-    // YENİ OLUŞTURULAN KULLANICI NESNESİNİ DÖNDÜRÜN
+    // YENİ OLUŞTURULAN KULLANICININ POST NESNESİNİ DÖNDÜRÜN
     // user id yi doğrulayan bir ara yazılım gereklidir.
     // ve istek gövdesini doğrulayan bir ara yazılım gereklidir.
     try {
-      const { text } = req.body
-      const insertedPost = await postModel.insert({
+      let { text } = req.body
+      const insertedUserPost = await postModel.insert({
         user_id: req.params.id,
         text: text,
       })
-      res.status(201).json(insertedPost)
+      res.status(201).json(insertedUserPost)
     } catch (error) {
       next(error)
     }
@@ -103,4 +102,5 @@ router.post(
 )
 
 // routerı dışa aktarmayı unutmayın
+
 module.exports = router
